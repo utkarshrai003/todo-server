@@ -1,6 +1,7 @@
 
 const express = require('express');
 const http = require('http');
+const database = require('./services/database');
 
 // Creating server
 const app = express();
