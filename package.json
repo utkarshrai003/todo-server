@@ -8,5 +8,8 @@
   },
   "repository": "",
   "author": "Utkarsh Rai",
-  "license": "BSD"
+  "license": "BSD",
+  "devDependencies": {
+    "express": "4.15.3"
+  }
 }
