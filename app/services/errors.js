@@ -21,8 +21,8 @@ const errors = {
 class TodoError extends Error {
   constructor(error) {
     super(error);
-    Error.stackTraceLimit = 5;
     this.code = code;
+    Error.stackTraceLimit = 5;
   }
 }
 
