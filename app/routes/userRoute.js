@@ -37,10 +37,6 @@ module.exports = {
     .catch((err) => {
       res.send(err);
     })
-  },
-
-  googleAuthentication: (req, res, next) => {
-    passport.authenticate('google', {scope: ['profile', 'email']});
   }
 
 }
