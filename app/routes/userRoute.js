@@ -6,9 +6,8 @@ module.exports = {
 
   signUp: (req, res, next) => {
     var params = req.body;
-    var email = params.email;
-    var password = params.password;
-    var password_confirmation = params.password_confirmation;
+    var [ email, password, password_confirmation ] =
+        [ params.email, params.password, params.password_confirmation ];
 
     if(!email || !password)
       res.send("Please provide both email and password");
@@ -17,7 +16,6 @@ module.exports = {
 
     User.add(email, password)
     .then((user) => {
-      console.log("I came here bro");
       res.send(user);
     })
     .catch((err) => {
@@ -26,6 +24,19 @@ module.exports = {
   },
 
   login: (req, res, next) => {
+    var params = req.body;
+    var [ email, password ] = [ params.email, params.password ];
+    if(!email || !password) {
+      res.send("Both email and password are required to Login");
+    }
+
+    User.login(email, password)
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((err) => {
+      res.send(err);
+    })
   },
 
   googleAuthentication: (req, res, next) => {
