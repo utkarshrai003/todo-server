@@ -13,6 +13,7 @@ const app = express();
 const httpServer = http.createServer(app);
 app.listen(port);
 
+require('./app/helpers/passport')(passport);
 // for passport
 app.use(passport.initialize());
 // parse application/x-www-form-urlencoded
@@ -24,6 +25,11 @@ app.use(bodyParser.json())
 const user = require('./app/routes/userRoute');
 
 // User routes
-app.get('/auth/google', user.googleAuthentication);
+app.get('/auth/google', passport.authenticate('google', { session: false, scope: [ 'https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/userinfo.email' ] }));
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    console.log("I was here 2");
+    res.send();
+  });
 app.post('/sign_up', user.signUp);
 app.post('/login', user.login);
