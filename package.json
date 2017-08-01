@@ -4,15 +4,21 @@
   "description": "A Todo App server..",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon app/server.js"
+    "start": "nodemon server.js"
   },
   "repository": "",
   "author": "Utkarsh Rai",
   "license": "BSD",
   "devDependencies": {
+    "nodemon": "1.11.0"
+  },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "body-parser": "1.17.2",
     "express": "4.15.3",
     "mongoose": "4.11.5",
-    "nodemon": "1.11.0",
-    "passport-google-oauth": "1.0.0"
+    "passport": "0.3.2",
+    "passport-google-oauth2": "0.1.6",
+    "passport-token-auth": "0.1.2"
   }
 }
