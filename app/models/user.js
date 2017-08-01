@@ -45,6 +45,9 @@ userSchema.statics.add = function(email, password) {
           resolve(newUser);
         });
       }
+      else {
+        reject("User account already exists");
+      }
     });
   });
 }
