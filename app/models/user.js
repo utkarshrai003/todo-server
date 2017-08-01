@@ -26,15 +26,15 @@ userSchema.methods.generateHash = function(password) {
 }
 
 // method to validate the password for the user
-userSchema.methods.validPassword = function(hashedPassword) {
-  return bcrypt.conpareSync(hashedPassword, this.local.password);
+userSchema.methods.compareHash = function(password) {
+  return bcrypt.compareSync(password, this.accounts.local.password);
 }
 
 // method to return a promise to add the user with local strategy
 userSchema.statics.add = function(email, password) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     User.findOne({'accounts.local.email': email})
-    .then(function(user) {
+    .then((user) => {
       if(!user) {
         var newUser = new User();
         newUser.accounts.local.email = email;
@@ -52,6 +52,23 @@ userSchema.statics.add = function(email, password) {
   });
 }
 
+// method to login a user with
+userSchema.statics.login = function(email, password) {
+  return new Promise((resolve, reject) => {
+    User.findOne({'accounts.local.email': email})
+    .then((user) => {
+      if(user.compareHash(password)) {
+        resolve({
+          email: user.accounts.local.email,
+          token: "I will generate it"
+        })
+      }
+      else {
+        reject("Incorrect email and password combination");
+      }
+    });
+  });
+}
 
 var User = mongoose.model('User', userSchema);
 
