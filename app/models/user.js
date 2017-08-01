@@ -6,18 +6,20 @@ var bcrypt = require('bcryptjs');
 
 var userSchema = new Schema({
   name: String,
-  accounts: {
-    local: {
-      email: String,
-      password: String
-    },
-    google: {
-      id: String,
-      token: String,
-      email: String,
-      name: String
-    }
-  }
+  email: { type: String, index: true, unique: true, sparse: true },
+  password: String,
+  google: {
+    id: String,
+    token: String,
+    email: { type: String, index: true, unique: true, sparse: true },
+    name: String
+  },
+  facebook: {
+    id: String,
+    token: String,
+    email: { type: String, index: true, unique: true, sparse: true },
+    name: String
+  },
 });
 
 // method to hash the password string
@@ -33,12 +35,12 @@ userSchema.methods.compareHash = function(password) {
 // method to return a promise to add the user with local strategy
 userSchema.statics.add = function(email, password) {
   return new Promise((resolve, reject) => {
-    User.findOne({'accounts.local.email': email})
+    User.findOne({'email': email})
     .then((user) => {
       if(!user) {
         var newUser = new User();
-        newUser.accounts.local.email = email;
-        newUser.accounts.local.password = newUser.generateHash(password);
+        newUser.email = email;
+        newUser.password = newUser.generateHash(password);
 
         newUser.save(function(err) {
           if(err) reject(err);
@@ -55,11 +57,11 @@ userSchema.statics.add = function(email, password) {
 // method to login a user with
 userSchema.statics.login = function(email, password) {
   return new Promise((resolve, reject) => {
-    User.findOne({'accounts.local.email': email})
+    User.findOne({'email': email})
     .then((user) => {
       if(user.compareHash(password)) {
         resolve({
-          email: user.accounts.local.email,
+          email: user.email,
           token: "I will generate it"
         })
       }
