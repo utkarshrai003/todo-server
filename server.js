@@ -26,3 +26,4 @@ const user = require('./app/routes/userRoute');
 // User routes
 app.get('/auth/google', user.googleAuthentication);
 app.post('/sign_up', user.signUp);
+app.post('/login', user.login);
