@@ -4,6 +4,7 @@ var User = require('../models/user');
 
 module.exports = {
 
+  // Endpoint to Sign Up a User with email and password
   signUp: (req, res, next) => {
     var params = req.body;
     var [ email, password, password_confirmation ] =
@@ -23,6 +24,7 @@ module.exports = {
     })
   },
 
+  // Endpoint to Login a user with email and pssword
   login: (req, res, next) => {
     var params = req.body;
     var [ email, password ] = [ params.email, params.password ];
