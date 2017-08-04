@@ -59,14 +59,14 @@ userSchema.statics.login = function(email, password) {
   return new Promise((resolve, reject) => {
     User.findOne({'email': email})
     .then((user) => {
-      if(user.compareHash(password)) {
+      if(user && user.compareHash(password)) {
         resolve({
           email: user.email,
           token: Jwt.generateToken(user)
         });
       }
       else {
-        reject("Incorrect email and password combination");
+        reject({code: 400, message: "Incorrect email and password combination"});
       }
     });
   });
