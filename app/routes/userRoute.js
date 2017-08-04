@@ -24,14 +24,13 @@ module.exports = {
     })
   },
 
-  // Endpoint to Login a user with email and pssword
+  // Endpoint to Login a user with email and password
   login: (req, res, next) => {
     var params = req.body;
     var [ email, password ] = [ params.email, params.password ];
     if(!email || !password) {
       res.send("Both email and password are required to Login");
-    }
-
+    }    
     User.login(email, password)
     .then((user) => {
       res.send(user);
