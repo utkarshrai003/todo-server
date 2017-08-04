@@ -48,7 +48,7 @@ userSchema.statics.add = function(email, password) {
         });
       }
       else {
-        reject("User account already exists");
+        reject({code: 400, message: "User account already exists"});
       }
     });
   });
