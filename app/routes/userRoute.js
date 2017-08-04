@@ -1,6 +1,7 @@
 
-var passport = require('passport');
-var User = require('../models/user');
+const passport = require('passport');
+const User = require('../models/user');
+const Responder = require('../services/responder');
 
 module.exports = {
 
@@ -11,16 +12,16 @@ module.exports = {
         [ params.email, params.password, params.password_confirmation ];
 
     if(!email || !password)
-      res.send("Please provide both email and password");
+      Responder.error(res, {code: 400, message: "Please provide both email and password"});
     if(password !== password_confirmation)
-      res.send("Password and password confirmation does not match");
+      Responder.error(res, {code: 400, message: "Password and password confirmation doen not match"});
 
     User.add(email, password)
     .then((user) => {
-      res.send(user);
+      Responder.success(res, user);
     })
     .catch((err) => {
-      res.send(err);
+      Responder.error(res, err);
     })
   },
 
@@ -29,14 +30,14 @@ module.exports = {
     var params = req.body;
     var [ email, password ] = [ params.email, params.password ];
     if(!email || !password) {
-      res.send("Both email and password are required to Login");
-    }    
+      Responder.error(res, {code: 400, message: "Both email and password are required to Login"});
+    }
     User.login(email, password)
     .then((user) => {
-      res.send(user);
+      Responder.success(res, user);
     })
     .catch((err) => {
-      res.send(err);
+      Responder.error(res, err);
     })
   }
 
