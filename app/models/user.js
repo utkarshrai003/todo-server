@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
+var Jwt = require('../helpers/jwt');
 var bcrypt = require('bcryptjs');
 
 var userSchema = new Schema({
@@ -29,7 +29,7 @@ userSchema.methods.generateHash = function(password) {
 
 // method to validate the password for the user
 userSchema.methods.compareHash = function(password) {
-  return bcrypt.compareSync(password, this.accounts.local.password);
+  return bcrypt.compareSync(password, this.password);
 }
 
 // method to return a promise to add the user with local strategy
@@ -62,8 +62,8 @@ userSchema.statics.login = function(email, password) {
       if(user.compareHash(password)) {
         resolve({
           email: user.email,
-          token: "I will generate it"
-        })
+          token: Jwt.generateToken(user)
+        });
       }
       else {
         reject("Incorrect email and password combination");
