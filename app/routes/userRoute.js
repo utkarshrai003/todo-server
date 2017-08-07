@@ -13,16 +13,17 @@ module.exports = {
 
     if(!email || !password)
       Responder.error(res, {code: 400, message: "Please provide both email and password"});
-    if(password !== password_confirmation)
+    else if(password !== password_confirmation)
       Responder.error(res, {code: 400, message: "Password and password confirmation doen not match"});
-
-    User.add(email, password)
-    .then((user) => {
-      Responder.success(res, user);
-    })
-    .catch((err) => {
-      Responder.error(res, err);
-    })
+    else{
+      User.add(email, password)
+      .then((user) => {
+        Responder.success(res, user);
+      })
+      .catch((err) => {
+        Responder.error(res, err);
+      });
+    }
   },
 
   // Endpoint to Login a user with email and password
@@ -41,21 +42,14 @@ module.exports = {
     })
   },
 
-  // Endpoint to redirect user to google sign in page
-  googleAuth: () => {
-    passport.authenticate('google',
-     {
-        session: false,
-        scope: [ 'https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/userinfo.email' ]
-     })
+  // Endpoint to receive the callback from google api
+  googleAuthCallback: (req, res, next) => {
+    res.send("google authentication successfull");
   },
 
-  // Endpoint to
-  googleAuthCallback: () => {
-    passport.authenticate('google', {},
-      function(req, res) {
-        res.send("google authentication successfull");
-      });
-    }
+  // Endpoint to receive callback from facebook api
+  facebookAuthCallback: (req, res, next) => {
+    res.send("facebook authentication successfull");
+  }
 
 }
