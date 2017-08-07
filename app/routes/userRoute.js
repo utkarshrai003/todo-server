@@ -39,6 +39,23 @@ module.exports = {
     .catch((err) => {
       Responder.error(res, err);
     })
-  }
+  },
+
+  // Endpoint to redirect user to google sign in page
+  googleAuth: () => {
+    passport.authenticate('google',
+     {
+        session: false,
+        scope: [ 'https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/userinfo.email' ]
+     })
+  },
+
+  // Endpoint to
+  googleAuthCallback: () => {
+    passport.authenticate('google', {},
+      function(req, res) {
+        res.send("google authentication successfull");
+      });
+    }
 
 }
