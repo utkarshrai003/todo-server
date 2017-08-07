@@ -1,30 +1,33 @@
 
+// Npm modules
 const express = require('express');
 const http = require('http');
-const database = require('./config/database');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 
-// specifying port
-var port = process.env.PORT || 8080;
-
-// authentication
+// Local modules
 const Auth = require('./app/services/auth');
+const database = require('./config/database');
+
+// Specifying port
+const port = process.env.PORT || 8080;
 
 // Creating server
 const app = express();
 const httpServer = http.createServer(app);
 app.listen(port);
 
+// For passport
 require('./app/services/passport')(passport);
-// for passport
 app.use(passport.initialize());
+
+// Body Parser
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-// Import routes
+// Import Application Routes
 const user = require('./app/routes/userRoute');
 
 // Google Authentication Routes
