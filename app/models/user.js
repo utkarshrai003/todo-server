@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Jwt = require('../helpers/jwt');
+var Jwt = require('../services/jwt');
 var bcrypt = require('bcryptjs');
 
 var userSchema = new Schema({
