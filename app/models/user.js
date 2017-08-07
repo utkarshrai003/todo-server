@@ -46,8 +46,9 @@ userSchema.statics.add = function(email, password) {
 
         newUser.save(function(err) {
           if(err) reject(err);
-          delete newUser.password;
-          resolve(newUser);
+          let userObj = newUser.toObject();
+          delete userObj.password;
+          resolve(userObj);
         });
       }
       else {
@@ -64,6 +65,7 @@ userSchema.statics.login = function(email, password) {
     .then((user) => {
       if(user && user.compareHash(password)) {
         resolve({
+          _id: user._id,
           email: user.email,
           token: Jwt.generateToken(user)
         });
