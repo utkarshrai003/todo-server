@@ -55,7 +55,8 @@ passport.use(new FacebookStrategy({
   // pull in our app id and secret from our auth.js file
   clientID        : env.facebookAuth.clientID,
   clientSecret    : env.facebookAuth.clientSecret,
-  callbackURL     : env.facebookAuth.callbackURL
+  callbackURL     : env.facebookAuth.callbackURL,
+  profileFields   : ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified']
 },
 // facebook will send back the token and profile
 function(token, refreshToken, profile, done) {
