@@ -33,13 +33,15 @@ module.exports = {
     if(!email || !password) {
       Responder.error(res, {code: 400, message: "Both email and password are required to Login"});
     }
-    User.login(email, password)
-    .then((user) => {
-      Responder.success(res, user);
-    })
-    .catch((err) => {
-      Responder.error(res, err);
-    })
+    else {
+      User.login(email, password)
+      .then((user) => {
+        Responder.success(res, user);
+      })
+      .catch((err) => {
+        Responder.error(res, err);
+      });
+    }
   },
 
   // Endpoint to receive the callback from google api
