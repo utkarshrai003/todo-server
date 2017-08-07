@@ -17,6 +17,9 @@ module.exports = {
   },
 
   verifyToken: (token) => {
-
+    return new Promise((resolve, reject) => {
+      let jwtObject = jwt.verify(token, env.jwtSecret);
+      resolve(jwtObject.data);
+    });
   }
 }
