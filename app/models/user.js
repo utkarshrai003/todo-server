@@ -22,14 +22,16 @@ var userSchema = new Schema({
   },
 });
 
-// method to hash the password string
-userSchema.methods.generateHash = function(password) {
-  return bcrypt.hashSync(password, 10);
-}
-
+// Instance Methods
 // method to validate the password for the user
 userSchema.methods.compareHash = function(password) {
   return bcrypt.compareSync(password, this.password);
+}
+
+// Class methods
+// method to hash the password string
+userSchema.statics.generateHash = function(password) {
+  return bcrypt.hashSync(password, 10);
 }
 
 // method to return a promise to add the user with local strategy
@@ -40,10 +42,11 @@ userSchema.statics.add = function(email, password) {
       if(!user) {
         var newUser = new User();
         newUser.email = email;
-        newUser.password = newUser.generateHash(password);
+        newUser.password = User.generateHash(password);
 
         newUser.save(function(err) {
           if(err) reject(err);
+          delete newUser.password;
           resolve(newUser);
         });
       }
@@ -54,7 +57,7 @@ userSchema.statics.add = function(email, password) {
   });
 }
 
-// method to login a user with
+// method to login a user with email and password
 userSchema.statics.login = function(email, password) {
   return new Promise((resolve, reject) => {
     User.findOne({'email': email})
