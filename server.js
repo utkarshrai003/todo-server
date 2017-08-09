@@ -29,6 +29,7 @@ app.use(bodyParser.json())
 
 // Import Application Routes
 const user = require('./app/routes/userRoute');
+const project = require('./app/routes/projectRoute');
 
 // Google Authentication Routes
 app.get('/auth/google', passport.authenticate('google', {
@@ -43,9 +44,18 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRed
 
 app.get('/check', Auth.isAuthenticated, function(req, res, next) {
   console.log("hllo bro");
-  res. send("everytgjkdv is fine");
-})
+  res.send("everytgjkdv is fine");
+});
 
 // Local authentication route
 app.post('/sign_up', user.signUp);
 app.post('/login', user.login);
+
+// Project routes
+app.post('/project/add', project.add);
+app.get('/project/list', project.list);
+
+// Default Path for Invalid requests
+app.get('/*', function(req, res) {
+  res.status(401).send("Bad Request");
+});
