@@ -15,13 +15,19 @@ const errors = {
   notFound: {
     code: 404,
     message: 'Not Found'
+  },
+  // Mongoose error
+  invalidObjectId: {
+    code: 400,
+    message: 'Invalid Object Id.'
   }
 }
 
 class TodoError extends Error {
   constructor(error) {
     super(error);
-    this.code = code;
+    this.code = error.code;
+    this.message = error.message;
     Error.stackTraceLimit = 5;
   }
 }
