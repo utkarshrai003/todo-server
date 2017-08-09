@@ -20,6 +20,10 @@ var userSchema = new Schema({
     email: { type: String, index: true, unique: true, sparse: true },
     name: String
   },
+  projects: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Project'
+  }]
 });
 
 // Instance Methods
