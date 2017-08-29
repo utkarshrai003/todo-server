@@ -21,7 +21,7 @@ module.exports = {
   },
 
   list: (req, res, next) => {
-    var creator_id = req.query.creator_id;
+    var creator_id = req.query.creatorIdid;
     if(!mongoose.Types.ObjectId.isValid(creator_id)) {
       return Responder.error(res, Error.invalidObjectId());
     }

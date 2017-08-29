@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 // Local modules
 const Auth = require('./app/services/auth');
 const database = require('./config/database');
+const Responder = require('./app/services/responder');
 
 // Specifying port
 const port = process.env.PORT || 8080;
@@ -25,11 +26,14 @@ app.use(passport.initialize());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+// Initiallize the responder
+app.use(Responder.init);
 
 // Import Application Routes
 const user = require('./app/routes/userRoute');
 const project = require('./app/routes/projectRoute');
+const task = require('./app/routes/taskRoute');
 
 // Google Authentication Routes
 app.get('/auth/google', passport.authenticate('google', {
@@ -55,7 +59,9 @@ app.post('/login', user.login);
 app.post('/project/add', project.add);
 app.get('/project/list', project.list);
 
-// Default Path for Invalid requests
-app.get('/*', function(req, res) {
-  res.status(401).send("Bad Request");
-});
+// Task routes
+app.post('/task/add', task.add);
+// app.get('/task/list', task.list);
+
+// Hook to execute before every request
+// app.use(Responder.reply());

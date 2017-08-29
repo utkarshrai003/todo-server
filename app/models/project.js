@@ -24,4 +24,9 @@ const projectSchema = new Schema({
 
 const Project = mongoose.model('Project', projectSchema);
 
+// Instance Method
+projectSchema.statics.add = function() {
+  
+}
+
 module.exports = Project;
